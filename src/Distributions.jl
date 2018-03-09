@@ -9,14 +9,23 @@ using Compat
 import Compat.MathConstants: γ
 
 import QuadGK.quadgk
-import Compat.view
-import Base.Random
 import Base: size, eltype, length, full, convert, show, getindex, scale!, rand, rand!
 import Base: sum, mean, median, maximum, minimum, quantile, std, var, cov, cor
 import Base: +, -
 import Base.Math.@horner
-import Base.LinAlg: Cholesky
-import Base.Random: GLOBAL_RNG, RangeGenerator, RangeGeneratorInt
+
+using Compat.Printf
+using Compat.LinearAlgebra
+import Compat.LinearAlgebra: Cholesky
+using Compat.Random
+import Compat.Random: GLOBAL_RNG, RangeGenerator
+
+if isdefined(Compat.Random, :RangeGeneratorInt)
+    import Compat.Random: RangeGeneratorInt
+else
+    import Compat.Random: SamplerRangeInt
+    const RangeGeneratorInt = SamplerRangeInt
+end
 
 if isdefined(Base, :scale)
     import Base: scale
