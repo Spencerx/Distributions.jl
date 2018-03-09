@@ -1,7 +1,8 @@
 using Distributions
 using JSON, ForwardDiff, Calculus, PDMats, Compat # test dependencies
 using Compat.Test
-
+using Compat.Distributed
+using Compat.Random
 
 tests = [
     "types",
@@ -33,7 +34,7 @@ tests = [
     "semicircle",
 ]
 
-print_with_color(:blue, "Running tests:\n")
+printstyled("Running tests:\n", color=:blue)
 
 if nworkers() > 1
     rmprocs(workers())
@@ -50,7 +51,8 @@ res = pmap(tests) do t
     @eval module $(Symbol("Test_", t))
     using Distributions
     using JSON, ForwardDiff, Calculus, PDMats, Compat # test dependencies
-    using Base.Test
+    using Compat.Test
+    using Compat.Random
     include($t * ".jl")
     end
     return
